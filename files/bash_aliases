@@ -1,12 +1,15 @@
 #!/bin/bash
 
+# ADDED VIA ANSIBLE
+
+
 # My Alias
 
-#Software
+# Software
 
 alias apt-clone='python3 /etc/apt-clone/apt-clone'
 
-#Show My Tmux Help
+# Show My Tmux Help
 alias tmux-help='cat /opt/tmux-help/tmux-help.txt'
 
 # ffmpeg Customs
@@ -32,10 +35,10 @@ alias dc='cd'
 # untar
 alias untar='tar xvf'
 
-#amass
+# amass
 alias amass-subdomain='domain(){ amass enum -passive -d "$1" >> /opt/amass-scans/"$1".txt; unset -f domain;}; domain'
 
-#SAV Command
+# SAV Command
 alias sav-start='sudo service sav-protect start'
 alias sav-stop='sudo service sav-protect stop'
 

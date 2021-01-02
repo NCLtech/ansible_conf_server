@@ -2,6 +2,8 @@
  - hosts: localhost
    connection: local
    become: true
+
+#Install Stuff
  
    tasks:
    - name: install packages
@@ -16,17 +18,43 @@
          - unattended-upgrades 
          - apt-listchanges 
          - net-tools
+# Add Me
+
+
+#Copy Files
 
    - name: Copy .bash_aliases
      copy:
-       src: ../files/bash_aliases
+       src: files/bash_aliases
        dest: /home/phil/.bash_aliases
        owner: phil
        group: phil
    
    - name: Copy .tmux.conf
      copy:
-       src: ../files/tmux.conf
+       src: files/tmux.conf
        dest: /home/phil/.bash_aliases
        owner: phil
        group: phil
+
+#Add System Stuff
+
+   - name: add ansible user
+     user:
+       name: autome
+       system: yes
+ 
+   - name: set up sudo for ansible user
+     copy:
+       src: files/sudoer_autome
+       dest: /etc/sudoers.d/autome
+       owner: root
+       group: root
+       mode: 0440
+ 
+   - name: add ansible-pull cron job
+     cron:
+       name: ansible auto-provision
+       user: autome
+       minute: "*/10"
+       job: ansible-pull -o -U https://github.com/NCLtech/ansible_conf_server.git

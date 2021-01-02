@@ -1,0 +1,32 @@
+ ---
+ - hosts: localhost
+   connection: local
+   become: true
+ 
+   tasks:
+   - name: install packages
+     package:
+       name:
+         - htop
+         - tmux
+         - tor
+	 - snapd
+	 - apache2
+	 - supervisor
+	 - unattended-upgrades 
+	 - apt-listchanges 
+	 - net-tools
+
+   - name: Copy .bash_aliases
+     copy:
+       src: ../files/bash_aliases
+       dest: /home/phil/.bash_aliases
+       owner: phil
+       group: phil
+   
+   - name: Copy .tmux.conf
+     copy:
+       src: ../files/tmux.conf
+       dest: /home/phil/.bash_aliases
+       owner: phil
+       group: phil

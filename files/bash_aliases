@@ -1,0 +1,129 @@
+#!/bin/bash
+
+# My Alias
+
+#Software
+
+alias apt-clone='python3 /etc/apt-clone/apt-clone'
+
+#Show My Tmux Help
+alias tmux-help='cat /opt/tmux-help/tmux-help.txt'
+
+# ffmpeg Customs
+alias mp4-mp3-folder='for vid in *.mp4; do ffmpeg -i "$vid" -f mp3 -ab 32000 "${vid%.mp4}.mp3"; done'
+alias mkv-mp4-folder='for vid in *.mkv; do ffmpeg -i "$vid" -vcodec copy -acodec copy "${vid%.mkv}.mp4"; done'
+alias mkv-mp4='mkvmp4(){ ffmpeg -i "$1" -vcodec copy -acodec copy "${1%.mkv}.mp4"; unset -f mkvmp4;}; mkvmp4'
+alias mp4-mp3='mp4mp3(){ ffmpeg -i "$1" -f mp3 -ab 32000 "${1%.mp4}.mp3"; unset -f mp4mp3;}; mp4mp3'
+
+# When you get bored
+alias telnet-starwars='telnet towel.blinkenlights.nl'
+alias nethack-online='ssh nethack@nethack.alt.org ; clear'
+alias tron-online='ssh sshtron.zachlatta.com ; clear'
+
+# My IP Info
+alias myip='MYIP=$(curl -s http://ipecho.net/plain; echo) && curl ipinfo.io/"$MYIP" && echo'
+alias ports-in-use='sudo lsof -i -P -n | grep LISTEN'
+# Mis typed whois
+alias whosi='whois'
+alias gti='git'
+alias dc='cd'
+
+# untar
+alias untar='tar xvf'
+
+#amass
+alias amass-subdomain='domain(){ amass enum -passive -d "$1" >> /opt/amass-scans/"$1".txt; unset -f domain;}; domain'
+
+
+#SAV Command
+alias sav-start='sudo service sav-protect start'
+alias sav-stop='sudo service sav-protect stop'
+
+# wget Shortcuts
+alias get-nordserverlist="wget https://downloads.nordcdn.com/configs/archives/servers/ovpn.zip"
+
+sshhpup=`cat /home/phil/.auth/honeypot-logs-user-pass.txt`
+alias honeypot-ssh-logs="curl -u $sshhpup https://ssh-honeypot.newcastleflyingcows.xyz/2020-09-24_15:58.log"
+
+# Make Life Easier
+
+alias wireshark-pfsense="sudo su -c 'wireshark -k -i <(ssh root@192.168.0.3 -p 2222 tcpdump -i lagg0 -U -w - )'"
+
+# Updates packages from all sources
+function update() {
+  if command -v snap >/dev/null; then
+    echo "Updating Snaps..."
+    sudo snap refresh
+  fi
+  if command -v apt >/dev/null; then
+    echo "Updating Apt Packages..."
+    sudo apt clean && sudo apt update && sudo apt --autoremove full-upgrade -y
+  else
+    echo "No apt binary found. Is this actually a Debian-based system?"
+  fi
+}
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    PS1="\[\033[0;31m\]\342\224\214\342\224\200\$([[ \$? != 0 ]] && echo \"[\[\033[0;31m\]\342\234\227\[\033[0;37m\]]\342\224\200\")[$(if [[ ${EUID} == 0 ]]; then echo '\[\033[01;31m\]root\[\033[01;33m\]@\[\033[01;96m\]\h'; else echo '\[\033[0;39m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h'; fi)\[\033[0;31m\]]\342\224\200[\[\033[0;32m\]\w\[\033[0;31m\]]\n\[\033[0;31m\]\342\224\224\342\224\200\342\224\200\342\225\274 \[\033[0m\]\[\e[01;33m\]\\$\[\e[0m\]"
+else
+    PS1='┌──[\u@\h]─[\w]\n└──╼ \卌\n'
+fi
+
+# Set 'man' colors
+if [ "$color_prompt" = yes ]; then
+	man() {
+	env \
+	LESS_TERMCAP_mb=$'\e[01;31m' \
+	LESS_TERMCAP_md=$'\e[01;31m' \
+	LESS_TERMCAP_me=$'\e[0m' \
+	LESS_TERMCAP_se=$'\e[0m' \
+	LESS_TERMCAP_so=$'\e[01;44;33m' \
+	LESS_TERMCAP_ue=$'\e[0m' \
+	LESS_TERMCAP_us=$'\e[01;32m' \
+	man "$@"
+	}
+fi
+
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\033[0;31m\]\342\224\214\342\224\200\$([[ \$? != 0 ]] && echo \"[\[\033[0;31m\]\342\234\227\[\033[0;37m\]]\342\224\200\")[$(if [[ ${EUID} == 0 ]]; then echo '\[\033[01;31m\]root\[\033[01;33m\]@\[\033[01;96m\]\h'; else echo '\[\033[0;39m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h'; fi)\[\033[0;31m\]]\342\224\200[\[\033[0;32m\]\w\[\033[0;31m\]]\n\[\033[0;31m\]\342\224\224\342\224\200\342\224\200\342\225\274 \[\033[0m\]\[\e[01;33m\]\\$\[\e[0m\]"
+    ;;
+*)
+    ;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi

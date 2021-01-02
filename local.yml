@@ -10,12 +10,12 @@
          - htop
          - tmux
          - tor
-	 - snapd
-	 - apache2
-	 - supervisor
-	 - unattended-upgrades 
-	 - apt-listchanges 
-	 - net-tools
+         - snapd
+         - apache2
+         - supervisor
+         - unattended-upgrades 
+         - apt-listchanges 
+         - net-tools
 
    - name: Copy .bash_aliases
      copy:

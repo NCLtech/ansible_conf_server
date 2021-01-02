@@ -23,6 +23,7 @@ alias tron-online='ssh sshtron.zachlatta.com ; clear'
 # My IP Info
 alias myip='MYIP=$(curl -s http://ipecho.net/plain; echo) && curl ipinfo.io/"$MYIP" && echo'
 alias ports-in-use='sudo lsof -i -P -n | grep LISTEN'
+
 # Mis typed whois
 alias whosi='whois'
 alias gti='git'
@@ -33,7 +34,6 @@ alias untar='tar xvf'
 
 #amass
 alias amass-subdomain='domain(){ amass enum -passive -d "$1" >> /opt/amass-scans/"$1".txt; unset -f domain;}; domain'
-
 
 #SAV Command
 alias sav-start='sudo service sav-protect start'

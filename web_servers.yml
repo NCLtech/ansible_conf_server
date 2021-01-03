@@ -1,0 +1,41 @@
+---
+
+- hosts: all
+  become: true
+  tasks: 
+
+  - name: Install ansible community.general
+      command: 'ansible-galaxy collection install community.general'
+      changed_when: false
+
+  - name: install updates
+    apt:
+      upgrade: dist
+      update_cashe: yes
+    when: ansible_distribution in ["debian", "ubuntu"]
+
+- hosts: web_servers
+  become: true
+   tasks:
+    
+   - name: Install Web Services
+     apt:
+       name:
+        - apache2
+        - libapache2-mod-php
+      state: latest
+      update_cache: yes  
+    when: ansible_distribution in ["debian", "ubuntu"]
+
+   - name: Install Certbot
+     community.general.snap:
+       name: 
+         - core
+     when: ansible_distribution in ["debian", "ubuntu"]
+
+   - name: Install Certbot
+     community.general.snap:
+       name: 
+         - certbot
+       classic: yes
+    when: ansible_distribution in ["debian", "ubuntu"]

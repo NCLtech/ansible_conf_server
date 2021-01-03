@@ -1,0 +1,23 @@
+---
+- hosts: all
+  become: true
+   tasks:
+  
+  - name: Install ansible community.general
+    command: 'ansible-galaxy collection install community.general'
+    changed_when: false
+     
+  - name: Install Web Services
+    apt:
+      name:
+        - apache2
+        - libapache2-mod-php
+      state: latest
+      update_cache: yes  
+       
+  - name: Install Certbot
+    community.general.snap:
+      name: 
+        - core
+        - certbot
+      classic: yes

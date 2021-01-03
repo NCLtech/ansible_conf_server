@@ -21,10 +21,10 @@
       update_cache: yes  
     when: ansible_distribution in ["debian", "ubuntu"]
    
-   - name: Install Certbot
-     community.general.snap:
-       name: 
-         - core
-         - certbot
-       classic: yes
-     when: ansible_distribution in ["debian", "ubuntu"]
+  - name: Install Certbot
+    community.general.snap:
+      name: 
+        - core
+        - certbot
+      classic: yes
+    when: ansible_distribution in ["debian", "ubuntu"]
